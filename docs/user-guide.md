@@ -7,7 +7,7 @@ slug: /user-guide
 
 ### 一．如何在 IPWEB 用户后台导出动态住宅代理？
 
-<img src="https://oss.ipweb.cc/docs/imgs/bf78991b9d05a5d.png" style="zoom:67%;" />
+<img src="https://oss.ipweb.cc/docs/imgs/bf78991b9d05a5d.png" style={{zoom: '67%'}} />
 
 登陆 IPWEB 的用户后台，左侧点击“动态住宅代理”后，您将会看到如上图所示内容，在这个页面，就可以生成完整的代理信息，具体操作步骤如下：
 
@@ -61,7 +61,7 @@ SID：Ab000001
 
 为了更直观，请看下面的图文解说：
 
-<img src="https://oss.ipweb.cc/docs/imgs/503010952dd7970.png" style="zoom:80%;" />
+<img src="https://oss.ipweb.cc/docs/imgs/503010952dd7970.png" style={{zoom: '80%'}} />
 
 让我们验证一下上面导出的这条 IP 是否有效：
 
@@ -69,7 +69,7 @@ SID：Ab000001
 
 curl -x B_36424_US_1474_10748_5_Ab000001:123456@gate1.ipweb.cc:7778 ipinfo.io
 
-<img src="https://oss.ipweb.cc/docs/imgs/71f9b316d82b791.png" style="zoom:80%;" />
+<img src="https://oss.ipweb.cc/docs/imgs/71f9b316d82b791.png" style={{zoom: '80%'}} />
 
 我们通过执行 curl 命令，成功的获取到一条来自美国 US(国家代码：US) 纽约州 New York（州代码：1474）纽约城市 New York City（城市代码：10748）的代理 IP
 
@@ -83,7 +83,7 @@ curl -x B_36424_US_1474_10748_5_Ab000001:123456@gate1.ipweb.cc:7778 ipinfo.io
 
 如何查询到国家代码、州代码及地区代码呢？登陆 IPWEB 后台http://user.ipweb.cc，左侧菜单点击“帮助中心”中的“国家/地区 /城市编码”可查询全球 200 多个国家近 20000 多个城市对应的代码。
 
-<img src="https://oss.ipweb.cc/docs/imgs/2f8f03c1f872bdc.png" style="zoom:80%" />
+<img src="https://oss.ipweb.cc/docs/imgs/2f8f03c1f872bdc.png" style={{zoom: '80%'}} />
 
 2、以上述代理 IP 为例：
 
