@@ -1,6 +1,5 @@
 ---
 sidebar_position: 2
-slug: /
 ---
 
 # IPWEB 代理使用指南
