@@ -87,11 +87,11 @@ const config: Config = {
         //   label: '文档',
         //   position: 'left',
         // },
-        {
-          to: '/user-guide',
-          label: '使用指南',
-          position: 'left',
-        },
+        // {
+        //   to: '/user-guide',
+        //   label: '使用指南',
+        //   position: 'left',
+        // },
       ],
     },
     footer: {
