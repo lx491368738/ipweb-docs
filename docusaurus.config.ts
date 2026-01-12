@@ -81,14 +81,18 @@ const config: Config = {
         alt: 'IPWeb API Docs Logo',
         src: 'img/logo.svg',
       },
-      // items: [
-      //   {
-      //     type: 'docSidebar',
-      //     sidebarId: 'tutorialSidebar',
-      //     position: 'left',
-      //     label: 'Tutorial',
-      //   },
-      // ],
+      items: [
+        // {
+        //   to: '/',
+        //   label: '文档',
+        //   position: 'left',
+        // },
+        {
+          to: '/user-guide',
+          label: '使用指南',
+          position: 'left',
+        },
+      ],
     },
     footer: {
       style: 'dark',
