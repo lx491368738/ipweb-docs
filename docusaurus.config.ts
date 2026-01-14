@@ -22,6 +22,9 @@ const config: Config = {
   // baseUrl: "/docs/",
   baseUrl: '/',
 
+  // 新增这一行：开启结尾斜杠
+  trailingSlash: true,
+
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'resource-ipweb', // Usually your GitHub org/user name.
