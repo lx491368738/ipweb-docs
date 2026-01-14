@@ -1,6 +1,7 @@
 ---
 sidebar_position: 1
 slug: /
+description: 快速开始：使用与 OpenAI 兼容的 IPWeb API，示例演示你的第一个请求。
 ---
 
 # 快速开始

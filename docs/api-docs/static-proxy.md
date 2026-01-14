@@ -1,6 +1,7 @@
 ---
 sidebar_position: 3
 slug: /static-proxy
+description: 静态住宅代理 V2 API：国家与城市查询、创建静态代理与续费、调试测试及响应格式说明。
 ---
 
 # 静态代理

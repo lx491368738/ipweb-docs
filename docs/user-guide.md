@@ -1,6 +1,7 @@
 ---
 sidebar_position: 3
 slug: /user-guide
+description: IPWEB 代理使用指南：导出动态住宅代理、解析代理信息、验证有效性、使用自编规则生成全球随机代理，并选择合适的代理服务器。
 ---
 
 # IPWEB 代理使用指南

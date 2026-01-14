@@ -1,6 +1,7 @@
 ---
 sidebar_position: 2
 slug: /dynamic-traffic
+description: 动态流量 API：查询充值与消耗记录、代理客户流量报表，包含认证方式与示例。
 ---
 
 # 动态流量

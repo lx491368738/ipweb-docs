@@ -1,6 +1,7 @@
 ---
 sidebar_position: 1
 slug: /agent-client
+description: 开放平台客户记录 API：查询客户列表，含认证方式、请求示例、响应格式与错误码说明。
 ---
 
 # 代理客户

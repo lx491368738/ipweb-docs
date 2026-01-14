@@ -63,6 +63,13 @@ const config: Config = {
   ],
 
   themeConfig: {
+    metadata: [
+      {
+        name: 'robots',
+        content:
+          'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+      },
+    ],
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     colorMode: {
