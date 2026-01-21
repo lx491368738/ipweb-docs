@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
-slug: /agent-client
+slug: /api-customer
 description: 开放平台客户记录 API：查询客户列表，含认证方式、请求示例、响应格式与错误码说明。
 ---
 
@@ -17,10 +17,6 @@ description: 开放平台客户记录 API：查询客户列表，含认证方式
     - [Token 格式说明](#token-格式说明)
   - [3. API 接口列表](#3-api-接口列表)
     - [3.1 获取代理的客户记录](#31-获取代理的客户记录)
-      - [请求参数](#请求参数)
-      - [响应数据格式](#响应数据格式)
-      - [请求示例](#请求示例)
-      - [响应示例](#响应示例)
   - [4. 响应格式说明](#4-响应格式说明)
   - [5. 错误码说明](#5-错误码说明)
 
@@ -61,17 +57,7 @@ Token: your_access_token_here
 
 ```
 # 使用curl命令示例
-curl -X GET "http://user.ipweb.cc/prod-api/open/dynamic/myRechargeFlowList" \
-     -H "Token: your-access-token"
-
-# 使用JavaScript fetch示例
-fetch("http://user.ipweb.cc/prod-api/open/dynamic/myRechargeFlowList", {
-  method: 'GET',
-  headers: {
-    'Token': 'your-access-token',
-    'Content-Type': 'application/json'
-  }
-})
+curl -X GET "http://user.ipweb.cc/prod-api/open/customer/list?pageNum=1&pageSize=10&userName=" -H "token: your-access-token"
 ```
 
 ### Token 格式说明
