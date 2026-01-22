@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 slug: /api-dynamic-customer
 description: 开放平台客户记录 API：查询客户列表，请求示例、响应格式与错误码说明。
 ---
@@ -73,6 +73,98 @@ curl -X GET "http://user.ipweb.cc/prod-api/open/customer/list?pageNum=1&pageSize
   "code": 200,
   "msg": "无效的认证令牌",
   "data": null
+}
+```
+
+## 2.  创建账号
+
+**GET** `/api/agent/addUser?userName=lisi@q.com`
+
+**功能描述:** 创建用户账号
+
+### 请求参数：
+
+参数名 |  是否必传 |  类型 |  说明  
+---|---|---|---  
+userName |  是 |  String |  创建账号昵称(邮箱格式)  
+
+### 返回结果：
+
+参数名 |  类型 |  说明  
+---|---|---  
+code |  Integer |  200表示成功，201表示名称存在,是该渠道的客户，202表示名称存在,不是该渠道的客户 其他表示失败  
+msg |  String |  响应描述  
+customerId |  Integer |  客户id  
+Token |  String |  用户Token  
+password |  String |  用户随机验证密码  
+
+### 返回示例：
+```text
+{
+    "msg": "注册失败，该用户名已存在,不是该渠道的客户",
+    "code": 202
+}
+
+{
+    "msg": "操作成功",
+    "password": "abcdefg",
+    "code": 200,
+    "customerId": 888,
+    "Token": "AAEYX6KEXMJUZ86NVZRASRZF50A"
+}
+```
+## 3. 修改验证(代理)密码
+
+**GET** `/api/agent/updatePwd?customerId=888&password=123456`
+
+
+
+### 请求参数：
+
+参数名 |  是否必传 |  类型 |  说明  
+---|---|---|---  
+customerId |  是 |  String |  被修改的客户id  
+password |  是 |  String |  客户新密码  
+
+### 返回结果：
+
+参数名 |  类型 |  说明  
+---|---|---  
+code |  Integer |  200表示成功，201表示名称存在,是该渠道的客户，其他表示失败  
+msg |  String |  响应描述  
+
+### 返回示例：
+```text
+{
+    "msg": "成功",
+    "code": 200
+}
+```
+## 4. 客户关停
+
+**GET** `/api/agent/changeStatus?customerId=888&customerState=1`
+
+ 
+
+### 请求参数：
+
+参数名 |  是否必传 |  类型 |  说明  
+---|---|---|---  
+customerId |  是 |  String |  被修改的客户id  
+customerState |  是 |  Integer |  关停状态 （0正常 1停用）  
+
+### 返回结果：
+
+参数名 |  类型 |  说明  
+---|---|---  
+code |  Integer |  200表示成功，201表示名称存在,是该渠道的客户，其他表示失败  
+msg |  String |  响应描述  
+
+### 返回示例：
+```text
+{
+    "msg": "成功",
+    "code": 200
 }
 ```
 

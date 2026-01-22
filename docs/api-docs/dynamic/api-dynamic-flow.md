@@ -275,6 +275,188 @@ curl -X GET "http://user.ipweb.cc/prod-api/open/dynamic/flowReport?customerId=39
 }
 ```
 
+## 4.  多类型流量查询
+
+**GET** `/api/agent/getFlowTotalFull`
+
+
+### 返回结果：
+
+参数名 |  |  类型 |  说明  
+---|---|---|---  
+code |  |  Integer |  200表示成功  
+msg |  |  String |  响应描述  
+data |  |  Json |  对象  
+|  account |  Json |  客户流量  
+|  account.flowCount |  Float |  充值流量M  
+|  account.consumeFlow |  Float |  消费流量M  
+|  account.residualFlow |  Float |  剩余流量M  
+|  account2 |  Json |  客户流量2  
+|  account2.flowCount |  Float |  充值流量M  
+|  account2.consumeFlow |  Float |  消费流量M  
+|  account2.residualFlow |  Float |  剩余流量M  
+
+### 返回示例：
+```text
+{
+    "msg": "操作成功",
+    "code": 200,
+    "data": {
+        "account2": {
+            "consumeFlow": 0.00,
+            "residualFlow ": 5242880.00,
+            "flowCount": 5242880,
+            "residualFlow": 5242880.00
+        },
+        "account": {
+            "consumeFlow": 0.0,
+            "residualFlow ": 0.00,
+            "flowCount": 0.00,
+            "residualFlow": 0.00
+        }
+    }
+}
+```
+## 5.  nni流量消费详情查询
+
+**GET** `/api/agent/getNNIFlowConsumeDetail?startDate=2023-06-20&endDate=2023-06-21`
+
+
+### 请求参数：
+
+参数名 |  是否必传 |  类型 |  说明  
+---|---|---|---  
+startDate |  否 |  String |  开始日期  
+endDate |  否 |  String |  结束日期  
+
+### 返回结果：
+
+参数名 |  |  类型 |  说明  
+---|---|---|---  
+code |  |  Integer |  200表示成功  
+msg |  |  String |  响应描述  
+data |  |  Array |  数组对象  
+|  date |  String |  日期  
+|  flow |  Float |  消耗流量M  
+
+### 返回示例：
+```text
+{
+    "msg": "操作成功",
+    "code": 200,
+    "data": [
+        {
+            "date": "2023-06-20",
+            "flow": 21889.75
+        },
+        {
+            "date": "2023-06-21",
+            "flow": 32335.47
+        }
+    ]
+}
+```
+## 6.  流量消费详情查询
+
+**GET** `/api/agent/getFlowConsumeDetail?startDate=2023-06-20&endDate=2023-06-21`
+
+
+### 请求参数：
+
+参数名 |  是否必传 |  类型 |  说明  
+---|---|---|---  
+startDate |  否 |  String |  开始日期  
+endDate |  否 |  String |  结束日期  
+
+### 返回结果：
+
+参数名 |  |  类型 |  说明  
+---|---|---|---  
+code |  |  Integer |  200表示成功  
+msg |  |  String |  响应描述  
+data |  |  Array |  数组对象  
+|  date |  String |  日期  
+|  uploadFlow |  Float |  上传流量M  
+|  downloadFlow |  Float |  下载流量M  
+
+### 返回示例：
+```text
+{
+    "msg": "操作成功",
+    "code": 200,
+    "data": [
+        {
+            "date": "2023-06-20",
+            "downloadFlow": 21889.75,
+            "uploadFlow": 6529.83
+        },
+        {
+            "date": "2023-06-21",
+            "downloadFlow": 32335.47,
+            "uploadFlow": 11423.92
+        }
+    ]
+}
+```
+## 7.  充值流量
+
+**GET** `/api/agent/rechargeTrafficCount?customerId=88&orderId=123456&trafficCount=1.01`
+
+
+### 请求参数：
+
+参数名 |  是否必传 |  类型 |  说明  
+---|---|---|---  
+customerId |  是 |  String |  被充值的客户id  
+orderId |  是 |  String |  充值订单号(防止重复处理)  
+trafficCount |  是 |  float |  流量的充值数 单位G  
+
+### 返回结果：
+
+参数名 |  类型 |  说明  
+---|---|---  
+code |  Integer |  200表示成功，203表示已经处理订单，204充值失败，该用户不是该渠道客户，其他表示失败  
+msg |  String |  响应描述  
+
+### 返回示例：
+```text
+{
+    "msg": "该订单已处理",
+    "code": 201
+}
+
+{
+    "msg": "充值成功",
+    "code": 200
+}
+```
+## 8.  扣除流量
+
+**GET** `/api/agent/deductionFlow?customerId=88&trafficCount=1.01`
+
+
+### 请求参数：
+
+参数名 |  是否必传 |  类型 |  说明  
+---|---|---|---  
+customerId |  是 |  String |  被扣除的客户id  
+trafficCount |  是 |  float |  流量的充值数 单位G  
+
+### 返回结果：
+
+参数名 |  类型 |  说明  
+---|---|---  
+code |  Integer |  200表示成功，其他表示失败  
+msg |  String |  响应描述  
+
+### 返回示例：
+```text
+{
+    "msg": "扣除成功",
+    "code": 200
+}
+```
+
 ---
 
 
