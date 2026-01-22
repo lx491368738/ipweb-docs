@@ -5,93 +5,17 @@ description: 静态住宅代理 V2 API：国家与城市查询、创建静态代
 ---
 
 # 静态代理
-
-## 目录
-
-- [1. 接口概述](#1-接口概述)
-- [2. 认证方式](#2-认证方式)
-- [3. API 接口列表](#3-api接口列表)
-  - [3.1 获取国家列表](#31-获取国家列表)
-  - [3.2 获取城市列表](#32-获取城市列表)
-  - [3.3 获取业务名称集合](#33-获取业务名称集合)
-  - [3.4 获取空闲 IP 数](#34-获取空闲ip数)
-  - [3.5 创建静态代理 IP](#35-创建静态代理ip)
-  - [3.6 静态代理续费](#36-静态代理续费)
-- [4. 调试测试](#4-调试测试)
-- [5. 响应格式说明](#5-响应格式说明)
-- [6. 错误码说明](#6-错误码说明)
-
 ---
 
 ## 1. 接口概述
 
 静态 IP V2 API 提供了完整的静态住宅代理 IP 管理功能，包括查询可用资源、创建代理、续费等操作。
 
-**基础 URL：**
-
-- **HTTP：** `http://user.ipweb.cc/prod-api/v2/static-residential`
-- **HTTPS：** `https://user.ipweb.cc/prod-api/v2/static-residential`
-
-**支持格式：** JSON
-
-**字符编码：** UTF-8
-
-**协议支持：** 同时支持 HTTP 和 HTTPS 协议，推荐使用 HTTPS 以确保数据传输安全
-
 ---
 
-## 2. 认证方式
+## 2. 获取国家列表
 
-**认证方式：** Token 认证
-
-所有 API 请求都需要在请求头中包含有效的认证令牌。系统会验证令牌的有效性，无效令牌将返回认证失败错误。
-
-**注意：** 创建 IP 和续费接口还需要额外的客户访问控制权限。
-
-### 请求头格式
-
-在所有 API 请求中，需要在 HTTP 请求头中添加以下认证信息：
-
-```
-Token: your_access_token_here
-```
-
-### 示例
-
-#### 使用 curl 命令示例
-
-```bash
-curl -X GET "http://user.ipweb.cc/prod-api/v2/static-residential/listCountry" \
-     -H "Token: abc123def456ghi789jkl012mno345pqr678stu901vwx234yz"
-```
-
-#### 使用 JavaScript fetch 示例
-
-```javascript
-fetch('http://user.ipweb.cc/prod-api/v2/static-residential/listCountry', {
-  method: 'GET',
-  headers: {
-    Token: 'abc123def456ghi789jkl012mno345pqr678stu901vwx234yz',
-    'Content-Type': 'application/json',
-  },
-});
-```
-
-### Token 格式说明
-
-- **请求头名称：** Token
-- **Token 值：** 由系统分配的访问令牌字符串
-- **Token 长度：** 通常为 32-64 位字符的字母数字组合
-- **有效期：** Token 具有有效期限制，过期后需要重新获取
-- **安全性：** 请妥善保管 Token，避免泄露给第三方
-
----
-
-## 3. API 接口列表
-
-### 3.1 获取国家列表
-
-**请求方式：** `GET /listCountry`
+**请求方式：** `GET /v2/static-residential/listCountry`
 
 **功能描述：** 获取支持的国家代码列表
 
@@ -119,7 +43,7 @@ fetch('http://user.ipweb.cc/prod-api/v2/static-residential/listCountry', {
 
 ---
 
-### 3.2 获取城市列表
+## 3. 获取城市列表
 
 **请求方式：** `GET /listCity`
 
@@ -151,7 +75,7 @@ fetch('http://user.ipweb.cc/prod-api/v2/static-residential/listCountry', {
 
 ---
 
-### 3.3 获取业务名称集合
+## 4. 获取业务名称集合
 
 **请求方式：** `GET /listBusiness`
 
@@ -192,7 +116,7 @@ fetch('http://user.ipweb.cc/prod-api/v2/static-residential/listCountry', {
 
 ---
 
-### 3.4 获取空闲 IP 数
+## 5. 获取空闲 IP 数
 
 **请求方式：** `POST /countIdleIP`
 
@@ -238,7 +162,7 @@ fetch('http://user.ipweb.cc/prod-api/v2/static-residential/listCountry', {
 
 ---
 
-### 3.5 创建静态代理 IP
+## 6 创建静态代理 IP
 
 **请求方式：** `POST /newIP`
 
@@ -329,7 +253,7 @@ fetch('http://user.ipweb.cc/prod-api/v2/static-residential/listCountry', {
 
 ---
 
-### 3.6 静态代理续费
+## 7. 静态代理续费
 
 **请求方式：** `POST /renewIP`
 
@@ -401,34 +325,33 @@ fetch('http://user.ipweb.cc/prod-api/v2/static-residential/listCountry', {
 
 ---
 
-## 4. 调试测试
+## 8. 调试测试
 
 您可以使用以下工具测试 API 接口：
 
-### 使用 curl 测试
 
-#### 获取国家列表
+### 获取国家列表
 
 ```bash
 curl -X GET "http://user.ipweb.cc/prod-api/v2/static-residential/listCountry" \
      -H "Token: your_access_token_here"
 ```
 
-#### 获取城市列表
+### 获取城市列表
 
 ```bash
 curl -X GET "http://user.ipweb.cc/prod-api/v2/static-residential/listCity?country_code=US" \
      -H "Token: your_access_token_here"
 ```
 
-#### 获取业务名称集合
+### 获取业务名称集合
 
 ```bash
 curl -X GET "http://user.ipweb.cc/prod-api/v2/static-residential/listBusiness" \
      -H "Token: your_access_token_here"
 ```
 
-#### 获取空闲 IP 数
+### 获取空闲 IP 数
 
 ```bash
 curl -X POST "http://user.ipweb.cc/prod-api/v2/static-residential/countIdleIP" \
@@ -442,7 +365,7 @@ curl -X POST "http://user.ipweb.cc/prod-api/v2/static-residential/countIdleIP" \
      }'
 ```
 
-#### 创建静态代理 IP
+### 创建静态代理 IP
 
 ```bash
 curl -X POST "http://user.ipweb.cc/prod-api/v2/static-residential/newIP" \
@@ -460,7 +383,7 @@ curl -X POST "http://user.ipweb.cc/prod-api/v2/static-residential/newIP" \
      }'
 ```
 
-#### 静态代理续费
+### 静态代理续费
 
 ```bash
 curl -X POST "http://user.ipweb.cc/prod-api/v2/static-residential/renewIP" \
@@ -475,20 +398,9 @@ curl -X POST "http://user.ipweb.cc/prod-api/v2/static-residential/renewIP" \
 **注意：** 请将 `your_access_token_here` 替换为您的实际 Token。建议使用 Postman 或其他专业的 API 测试工具进行测试。
 
 ---
+ 
 
-## 5. 响应格式说明
-
-所有 API 接口都返回统一的 JSON 格式响应：
-
-| 字段名 | 类型    | 说明                           |
-| ------ | ------- | ------------------------------ |
-| code   | Integer | 响应状态码，200 表示成功       |
-| msg    | String  | 响应消息                       |
-| data   | Object  | 响应数据，具体结构根据接口而定 |
-
----
-
-## 6. 错误码说明
+## 9. 错误码说明
 
 以下是静态 IP 相关 API 接口可能返回的错误码及其说明：
 
@@ -506,17 +418,7 @@ curl -X POST "http://user.ipweb.cc/prod-api/v2/static-residential/renewIP" \
 | 2100   | 可选天数: 1、7、15、30、60、90、365 天 | 天数参数必须为：1、7、15、30、60、90、365 中的一个  |
 | 2101   | 当前 IP 仅支持: 30、60、90、365 天     | 当前 IP 的续费天数仅支持：30、60、90、365 天        |
 
-### 错误响应示例
-
-#### 认证失败示例
-
-```json
-{
-  "code": 401,
-  "msg": "无效的认证令牌",
-  "data": null
-}
-```
+## 10. 错误响应示例
 
 #### 静态 IP 库存不足示例
 

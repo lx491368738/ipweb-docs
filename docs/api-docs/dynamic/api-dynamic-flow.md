@@ -6,91 +6,15 @@ description: 动态流量 API：查询充值与消耗记录、代理客户流量
 
 # 动态流量
 
-## 目录
-
-- [动态流量](#动态流量)
-  - [目录](#目录)
-  - [1. 接口概述](#1-接口概述)
-  - [2. 认证方式](#2-认证方式)
-    - [请求头格式](#请求头格式)
-    - [示例](#示例)
-    - [Token 格式说明](#token-格式说明)
-  - [3. API 接口列表](#3-api-接口列表)
-    - [3.1 获取我的流量充值记录](#31-获取我的流量充值记录)
-    - [3.2 获取给我的流量充值记录](#32-获取给我的流量充值记录)
-    - [3.3 获取代理客户的流量使用记录](#33-获取代理客户的流量使用记录)
-  - [4. 响应格式说明](#4-响应格式说明)
-  - [5. 错误码说明](#5-错误码说明)
-
 ---
 
-## 1. 接口概述
+## 1. 获取我的流量充值记录
 
-动态流量 API 提供了完整的流量充值历史查询功能，包括查询为客户充值的记录和查询自己的充值记录。
-
-**基础 URL：**
-
-- **HTTP：** `http://user.ipweb.cc/prod-api/open/dynamic`
-- **HTTPS：** `https://user.ipweb.cc/prod-api/open/dynamic`
-
-**支持格式：** JSON
-
-**字符编码：** UTF-8
-
-**协议支持：** 同时支持 HTTP 和 HTTPS 协议，推荐使用 HTTPS 以确保数据传输安全
-
----
-
-## 2. 认证方式
-
-**认证方式：** Token 认证
-
-所有 API 请求都需要在请求头中包含有效的认证令牌。系统会验证令牌的有效性，无效令牌将返回认证失败错误。
-
-### 请求头格式
-
-在所有 API 请求中，需要在 HTTP 请求头中添加以下认证信息：
-
-```
-Token: your_access_token_here
-```
-
-### 示例
-
-```
-# 使用curl命令示例
-curl -X GET "http://user.ipweb.cc/prod-api/open/dynamic/myRechargeFlowList" \
-     -H "Token: abc123def456ghi789jkl012mno345pqr678stu901vwx234yz"
-
-# 使用JavaScript fetch示例
-fetch("http://user.ipweb.cc/prod-api/open/dynamic/myRechargeFlowList", {
-  method: 'GET',
-  headers: {
-    'Token': 'abc123def456ghi789jkl012mno345pqr678stu901vwx234yz',
-    'Content-Type': 'application/json'
-  }
-})
-```
-
-### Token 格式说明
-
-- **请求头名称：** Token
-- **Token 值：** 由系统分配的访问令牌字符串
-- **Token 长度：** 通常为 32-64 位字符的字母数字组合
-- **有效期：** Token 具有有效期限制，过期后需要重新获取
-- **安全性：** 请妥善保管 Token，避免泄露给第三方
-
----
-
-## 3. API 接口列表
-
-### 3.1 获取我的流量充值记录
-
-**GET** `/myRechargeFlowList`
+**GET** `/open/dynamic/myRechargeFlowList`
 
 **功能描述：** 获取我的流量充值记录，支持分页查询和条件过滤
 
-#### 请求参数
+### 请求参数
 
 | 参数名    | 类型    | 必填 | 说明                       | 默认值 |
 | --------- | ------- | ---- | -------------------------- | ------ |
@@ -101,7 +25,7 @@ fetch("http://user.ipweb.cc/prod-api/open/dynamic/myRechargeFlowList", {
 | startDate | String  | 否   | 开始日期，格式：yyyy-MM-dd | null   |
 | endDate   | String  | 否   | 结束日期，格式：yyyy-MM-dd | null   |
 
-#### 响应数据格式
+### 响应数据格式
 
 | 字段名                 | 类型                  | 说明                                |
 | ---------------------- | --------------------- | ----------------------------------- |
@@ -118,13 +42,13 @@ fetch("http://user.ipweb.cc/prod-api/open/dynamic/myRechargeFlowList", {
 | data.rows[].createBy   | String                | 操作人账号                          |
 | data.rows[].createTime | String                | 创建时间，格式：yyyy-MM-dd HH:mm:ss |
 
-#### 请求示例
+### 请求示例
 
 ```bash
 GET http://user.ipweb.cc/prod-api/open/dynamic/myRechargeFlowList?pageNum=1&pageSize=10&type=0&account=test@cc.cc&startDate=2025-04-20&endDate=2025-09-20
 ```
 
-#### 响应示例
+### 响应示例
 
 **成功响应：**
 
@@ -172,13 +96,13 @@ GET http://user.ipweb.cc/prod-api/open/dynamic/myRechargeFlowList?pageNum=1&page
 
 ---
 
-### 3.2 获取给我的流量充值记录
+## 2. 获取给我的流量充值记录
 
-**GET** `/rechargeFlowListForMe`
+**GET** `/open/dynamic/rechargeFlowListForMe`
 
 **功能描述：** 获取给我的流量充值记录，支持分页查询和条件过滤
 
-#### 请求参数
+### 请求参数
 
 | 参数名    | 类型    | 必填 | 说明                       | 默认值 |
 | --------- | ------- | ---- | -------------------------- | ------ |
@@ -188,17 +112,17 @@ GET http://user.ipweb.cc/prod-api/open/dynamic/myRechargeFlowList?pageNum=1&page
 | startDate | String  | 否   | 开始日期，格式：yyyy-MM-dd | null   |
 | endDate   | String  | 否   | 结束日期，格式：yyyy-MM-dd | null   |
 
-#### 响应数据格式
+### 响应数据格式
 
 响应数据格式与[获取客户充值历史列表](#31-获取我的流量充值记录)相同
 
-#### 请求示例
+### 请求示例
 
 ```bash
 GET http://user.ipweb.cc/prod-api/open/dynamic/rechargeFlowListForMe?pageNum=1&pageSize=10&type=0&account=admin@cc.cc&startDate=2025-04-20&endDate=2025-09-20
 ```
 
-#### 响应示例
+### 响应示例
 
 **成功响应：**
 
@@ -227,13 +151,13 @@ GET http://user.ipweb.cc/prod-api/open/dynamic/rechargeFlowListForMe?pageNum=1&p
 
 ---
 
-### 3.3 获取代理客户的流量使用记录
+## 3. 获取代理客户的流量使用记录
 
 **GET** `/open/dynamic/flowReport`
 
 **功能描述：** 获取代理客户的流量使用记录，支持分页查询和条件过滤
 
-#### 请求参数
+### 请求参数
 
 | 参数名     | 类型    | 必填 | 说明                                                          | 默认值 |
 | ---------- | ------- | ---- | ------------------------------------------------------------- | ------ |
@@ -243,7 +167,7 @@ GET http://user.ipweb.cc/prod-api/open/dynamic/rechargeFlowListForMe?pageNum=1&p
 | startDate  | String  | 否   | 开始日期，格式：yyyy-MM-dd                                    | null   |
 | endDate    | String  | 否   | 结束日期，格式：yyyy-MM-dd                                    | null   |
 
-#### 响应数据格式
+### 响应数据格式
 
 | 字段名                   | 类型    | 说明                       |
 | ------------------------ | ------- | -------------------------- |
@@ -256,13 +180,13 @@ GET http://user.ipweb.cc/prod-api/open/dynamic/rechargeFlowListForMe?pageNum=1&p
 | data.rows[].uploadFlow   | Double  | 上传流量（单位 MB）        |
 | data.rows[].downloadFlow | Double  | 下载流量（单位 MB）        |
 
-#### 请求示例
+### 请求示例
 
 ```bash
 curl -X GET "http://user.ipweb.cc/prod-api/open/dynamic/flowReport?customerId=39&pageSize=10&pageNum=1&startDate=2021-12-26&endDate=2025-12-26" -H "token: your-access-token"
 ```
 
-#### 响应示例
+### 响应示例
 
 **成功响应：**
 
@@ -353,39 +277,6 @@ curl -X GET "http://user.ipweb.cc/prod-api/open/dynamic/flowReport?customerId=39
 
 ---
 
-## 4. 响应格式说明
-
-所有 API 接口都返回统一的 JSON 格式响应：
-
-| 字段名 | 类型    | 说明                           |
-| ------ | ------- | ------------------------------ |
-| code   | Integer | 响应状态码，200 表示成功       |
-| msg    | String  | 响应消息                       |
-| data   | Object  | 响应数据，具体结构根据接口而定 |
-
----
-
-## 5. 错误码说明
-
-以下是动态流量相关 API 接口可能返回的错误码及其说明：
-
-| 错误码 | 说明           | 解决方案                    |
-| ------ | -------------- | --------------------------- |
-| 200    | 无效的认证令牌 | 检查 Token 是否正确且未过期 |
-| 200    | 账号信息不完整 | 联系管理员检查账户信息      |
-| 500    | 服务器内部错误 | 联系技术支持                |
-
-**错误响应示例：**
-
-```json
-{
-  "code": 200,
-  "msg": "无效的认证令牌",
-  "data": null
-}
-```
-
----
 
 © 2025 动态流量 API 接口文档 - 版本 1.0.0
 
