@@ -325,7 +325,177 @@ description: 静态住宅代理 V2 API：国家与城市查询、创建静态代
 
 ---
 
-## 8. 调试测试
+## 8. 查询剩余可买 IP 列表
+
+**请求方式：** `POST /availableIpSegments`
+
+**功能描述：** 根据筛选条件查询剩余可买 IP 列表，仅返回各 IP 段及对应剩余可买数量。用户信息从鉴权获取，无需传入。
+
+#### 请求参数
+
+| 参数名       | 类型    | 必填 | 说明                        | 限制     | 示例值   |
+| ------------ | ------- | ---- | --------------------------- | -------- | -------- |
+| country_code | String  | 是   | 国家/地区编码               | 如 HK、US | HK       |
+| city_name    | String  | 否   | 城市名称，空表示随机        | -        | HongKong |
+| line_type    | Integer | 否   | IP 质量：1-基础，2-标准，3-高端 | 1-3，默认 1 | 1        |
+
+#### 请求示例
+
+```json
+{
+  "country_code": "HK",
+  "city_name": "HongKong",
+  "line_type": 1
+}
+```
+
+#### 响应数据格式
+
+| 字段名                     | 类型            | 说明                           |
+| -------------------------- | --------------- | ------------------------------ |
+| data                       | Object          | 查询结果对象                   |
+| data.total_quantity        | Integer         | 剩余可买 IP 总数（所有段汇总） |
+| data.segments              | Array`<Object>` | 各 IP 段及对应剩余可买数量     |
+| data.segments[].ip_segment | String          | IP 段，CIDR 格式，如 62.72.182.0/24 |
+| data.segments[].quantity   | Integer         | 该段剩余可买数量               |
+
+#### 响应示例
+
+**成功响应：**
+
+```json
+{
+  "code": "200",
+  "message": "操作成功",
+  "data": {
+    "total_quantity": 506,
+    "segments": [
+      { "ip_segment": "62.72.182.0/24", "quantity": 253 },
+      { "ip_segment": "178.94.169.0/24", "quantity": 253 }
+    ]
+  }
+}
+```
+
+---
+
+## 9. 按 IP 段批量购买系统静态 IP
+
+**请求方式：** `POST /batchPurchaseBySegment`
+
+**功能描述：** 指定多个 IP 段前缀（如 66.92.226 开头、66.93.86 开头）+ 一个总数量，按 IP 段顺序依次分配直至达到数量。仅限当前鉴权用户，返回订单号、分配数量、过期时间。
+
+**权限要求：** 需要客户访问控制权限（代理商用户）
+
+#### 请求参数
+
+| 参数名                | 类型            | 必填 | 说明                                                                 | 限制              | 示例值                 |
+| --------------------- | --------------- | ---- | -------------------------------------------------------------------- | ----------------- | ---------------------- |
+| country_code          | String          | 是   | 国家/地区编码                                                        | 如 HK、US         | HK                     |
+| city_name             | String          | 否   | 城市名称，空表示随机                                                 | -                 | HongKong               |
+| line_type             | Integer         | 否   | IP 质量：1-基础，2-标准，3-高端                                       | 1-3，默认 1       | 2                      |
+| business              | String          | 否   | 业务类型，通过 listBusiness 获取                                     | 默认 other        | other                  |
+| ip_segment_prefixes   | Array`<String>` | 是   | IP 段前缀列表，按此顺序依次分配。如 ["66.92.226","66.93.86"] 表示先从 66.92.226.x 分配，不够再从 66.93.86.x | -                 | ["66.92.226","66.93.86"] |
+| count                 | Integer         | 是   | 购买总数量（从选定 IP 段中按顺序分配直至达到此数量）                  | 1-500             | 20                     |
+| days                  | Integer         | 是   | 购买天数                                                             | 1、7、15、30、60、90、365 | 30                     |
+| is_udp                 | Integer         | 否   | UDP 启用：1 启用，0 不启用                                           | 0-1，默认 0       | 0                      |
+
+#### 请求示例
+
+```json
+{
+  "country_code": "HK",
+  "city_name": "HongKong",
+  "line_type": 2,
+  "business": "other",
+  "ip_segment_prefixes": ["66.92.226", "66.93.86"],
+  "count": 20,
+  "days": 30,
+  "is_udp": 0
+}
+```
+
+#### 响应数据格式
+
+| 字段名           | 类型   | 说明                     |
+| ---------------- | ------ | ------------------------ |
+| data             | Object | 订单相关信息             |
+| data.order_id    | String | 订单号                   |
+| data.total       | Integer | 分配数量                 |
+| data.expired_at  | String | 过期时间（ISO 8601）     |
+
+#### 响应示例
+
+**成功响应：**
+
+```json
+{
+  "code": "200",
+  "message": "操作成功",
+  "data": {
+    "order_id": "SO202401010001",
+    "total": 20,
+    "expired_at": "2024-01-31T12:00:00.000+00:00"
+  }
+}
+```
+
+---
+
+## 10. 根据订单 ID 查询分配 IP 列表
+
+**请求方式：** `GET /orderAllots`
+
+**功能描述：** 根据订单 ID 查询该订单下所有已分配 IP 列表，不分页。仅限当前鉴权用户查询本人订单。不返回订单 ID，仅返回分配 IP 列表。
+
+**权限要求：** 需要客户访问控制权限
+
+#### 请求参数
+
+| 参数名    | 类型   | 必填 | 说明     | 限制       | 示例值         |
+| --------- | ------ | ---- | -------- | ---------- | -------------- |
+| order_id  | String | 是   | 订单号   | Query 参数 | SO202401010001 |
+
+**请求示例：** `GET /orderAllots?order_id=SO202401010001`
+
+#### 响应数据格式
+
+响应 `data` 为数组，即该订单下所有分配 IP 列表。
+
+| 字段名              | 类型    | 说明                   |
+| ------------------- | ------- | ---------------------- |
+| data                | Array   | 分配 IP 列表（每项见下表） |
+| data[].ip           | String  | 出口 IP                |
+| data[].node_domain  | String  | 代理服务器域名         |
+| data[].node_port    | Integer | 代理端口               |
+| data[].account      | String  | 代理账号               |
+| data[].password     | String  | 代理密码               |
+| data[].expired_at   | String  | 过期时间（ISO 8601）   |
+
+#### 响应示例
+
+**成功响应：**
+
+```json
+{
+  "code": "200",
+  "message": "操作成功",
+  "data": [
+    {
+      "ip": "178.93.111.1",
+      "node_domain": "proxy.example.com",
+      "node_port": 1080,
+      "account": "user001",
+      "password": "xxx",
+      "expired_at": "2024-01-31T12:00:00.000+00:00"
+    }
+  ]
+}
+```
+
+---
+
+## 11. 调试测试
 
 您可以使用以下工具测试 API 接口：
 
@@ -395,12 +565,49 @@ curl -X POST "http://user.ipweb.cc/prod-api/v2/static-residential/renewIP" \
      }'
 ```
 
+### 查询剩余可买 IP 列表（按 IP 段）
+
+```bash
+curl -X POST "http://user.ipweb.cc/prod-api/v2/static-residential/availableIpSegments" \
+     -H "Token: your_access_token_here" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "country_code": "HK",
+       "city_name": "HongKong",
+       "line_type": 1
+     }'
+```
+
+### 按 IP 段批量购买
+
+```bash
+curl -X POST "http://user.ipweb.cc/prod-api/v2/static-residential/batchPurchaseBySegment" \
+     -H "Token: your_access_token_here" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "country_code": "HK",
+       "city_name": "HongKong",
+       "line_type": 2,
+       "business": "other",
+       "ip_segment_prefixes": ["66.92.226", "66.93.86"],
+       "count": 20,
+       "days": 30,
+       "is_udp": 0
+     }'
+```
+
+### 根据订单 ID 查询分配 IP 列表
+
+```bash
+curl -X GET "http://user.ipweb.cc/prod-api/v2/static-residential/orderAllots?order_id=SO202401010001" \
+     -H "Token: your_access_token_here"
+```
+
 **注意：** 请将 `your_access_token_here` 替换为您的实际 Token。建议使用 Postman 或其他专业的 API 测试工具进行测试。
 
 ---
- 
 
-## 9. 错误码说明
+## 12. 错误码说明
 
 以下是静态 IP 相关 API 接口可能返回的错误码及其说明：
 
@@ -418,7 +625,7 @@ curl -X POST "http://user.ipweb.cc/prod-api/v2/static-residential/renewIP" \
 | 2100   | 可选天数: 1、7、15、30、60、90、365 天 | 天数参数必须为：1、7、15、30、60、90、365 中的一个  |
 | 2101   | 当前 IP 仅支持: 30、60、90、365 天     | 当前 IP 的续费天数仅支持：30、60、90、365 天        |
 
-## 10. 错误响应示例
+## 13. 错误响应示例
 
 #### 静态 IP 库存不足示例
 
@@ -462,6 +669,6 @@ curl -X POST "http://user.ipweb.cc/prod-api/v2/static-residential/renewIP" \
 
 ---
 
-**© 2024 静态 IP V2 API 接口文档 - 版本 1.9.0**
+**© 2024 静态 IP V2 API 接口文档 - 版本 1.10.0**
 
-**最后更新时间：** 2024 年 12 月 19 日
+**最后更新时间：** 2025 年 2 月 24 日
